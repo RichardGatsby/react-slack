@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
 import { addMessage } from "../../store/Channels/actionCreators";
-import { selectChannel, selectChannels } from "../../store/Channels/selectors";
+import { selectChannels } from "../../store/Channels/selectors";
 import { selectUser } from "../../store/User/selectors";
 import { Message } from "../../types";
 import MessageItem from "./MessageItem";
@@ -30,7 +31,7 @@ export default function Chat({ channelId }: ChatProps) {
         content: msg,
         channelId: channel.id,
         userName: user.userName,
-        timeStamp: new Date().toISOString()
+        timeStamp: new Date().toISOString(),
       };
       dispatch(addMessage(message));
 
@@ -78,38 +79,36 @@ export default function Chat({ channelId }: ChatProps) {
   if (!channel) {
     return <div>Could not find the channel</div>;
   }
-  console.log("render chat");
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "90vh" }}>
-      <div
-        style={{
-          height: "64px",
-          display: "flex",
-          alignItems: "center",
-          padding: 8,
-          borderBottom: "1px solid #d3d3d3",
-        }}
-      >
-        Chatting on channel #{channel.name}
-      </div>
-      <div
-        ref={messageListRef}
-        style={{
-          height: "90%",
-          border: "1px solid  #d3d3d3",
-          overflowY: "scroll",
-          background: "white",
-        }}
-      >
+    <StyledContainer>
+      <StyledChatHeader>Chatting on channel #{channel.name}</StyledChatHeader>
+      <StyledChat ref={messageListRef}>
         {channel.messages.map((message) => {
           return <MessageItem key={message.timeStamp} message={message} />;
         })}
-      </div>
+      </StyledChat>
       <Messager
         onSend={(value) => handleSendMessage(value)}
         disabled={!connected}
       ></Messager>
-    </div>
+    </StyledContainer>
   );
 }
+const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+`;
+const StyledChatHeader = styled.div`
+  height: 64px;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid #d3d3d3;
+`;
+const StyledChat = styled.div`
+  height: 90%;
+  border: 1px solid #d3d3d3;
+  overflow-y: scroll;
+`;

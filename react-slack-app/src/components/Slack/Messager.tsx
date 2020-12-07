@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import styled from "styled-components";
 
 import Button from "../shared/Button";
 
@@ -18,7 +19,7 @@ export default function Messager({ onSend, disabled }: MessagerProps) {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "row", alignItems:"center", padding: 8 }}>
+    <StyledContainer>
       <input
         value={chatInput}
         ref={inputRef}
@@ -29,6 +30,12 @@ export default function Messager({ onSend, disabled }: MessagerProps) {
         onClick={handleSendMessage}
         disabled={disabled}
       ></Button>
-    </div>
+    </StyledContainer>
   );
 }
+const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px;
+`;

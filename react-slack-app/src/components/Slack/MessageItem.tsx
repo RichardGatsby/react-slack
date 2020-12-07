@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import { Message } from "../../types";
 
 interface MessageItemProps {
@@ -7,34 +8,14 @@ interface MessageItemProps {
 
 export default function MessageItem({ message }: MessageItemProps) {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        padding: 16,
-        borderBottom: "1px solid #d3d3d3",
-      }}
-    >
-      <div
-        style={{
-          height: "40px",
-          width: "40px",
-          backgroundColor: "red",
-          borderRadius: "150px",
-          marginRight: "8px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        {message.userName.charAt(0)}
-      </div>
-      <div
+    <StyledContainer>
+      <StyledUserCircle>{message.userName.charAt(0)}</StyledUserCircle>
+      <StyledContentArea
         style={{
           display: "flex",
           flexDirection: "column",
           maxWidth: "90%",
-          wordBreak: "break-all"
+          wordBreak: "break-all",
         }}
       >
         <div style={{ width: "100%" }}>
@@ -58,7 +39,26 @@ export default function MessageItem({ message }: MessageItemProps) {
           </span>
         </div>
         {message.content}
-      </div>
-    </div>
+      </StyledContentArea>
+    </StyledContainer>
   );
 }
+
+const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding: 16px;
+  border-bottom: 1px solid #d3d3d3;
+`;
+const StyledUserCircle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
+  background-color: red;
+  border-radius: 150px;
+  margin-right: 8px;
+`;
+const StyledContentArea = styled.div`
+`

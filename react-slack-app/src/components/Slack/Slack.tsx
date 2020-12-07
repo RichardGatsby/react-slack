@@ -1,10 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import styled from "styled-components";
 import { setSelectedChannelId } from "../../store/Channels/actionCreators";
-import {
-  selectSelectedChannelId,
-} from "../../store/Channels/selectors";
+import { selectSelectedChannelId } from "../../store/Channels/selectors";
 import { selectUser } from "../../store/User/selectors";
 import ChannelList from "./ChannelList";
 import Chat from "./Chat";
@@ -18,16 +17,27 @@ export default function Slack() {
     history.push("/login");
   }
   return (
-    <div style={{ display: "flex"}}>
-      <div style={{ width: "10%", background: "#3F0E40", color:"#BCABBC" }}>
+    <StyledContainer>
+      <ChannelsContainer>
         <ChannelList
           selectedChannelId={selectedChannelId}
           onChannelClick={(id: number) => dispatch(setSelectedChannelId(id))}
         ></ChannelList>
-      </div>
-      <div style={{ width: "90%" }}>
+      </ChannelsContainer>
+      <ChatContainer>
         {selectedChannelId !== null && <Chat channelId={selectedChannelId} />}
-      </div>
-    </div>
+      </ChatContainer>
+    </StyledContainer>
   );
 }
+const StyledContainer = styled.div`
+  display: flex;
+`;
+const ChannelsContainer = styled.div`
+  width: 10%;
+  background-color: #3f0e40;
+  color: #bcabbc;
+`;
+const ChatContainer = styled.div`
+  width: 90%;
+`;

@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import { setUser } from "../store/User/actionCreators";
 import Button from "./shared/Button";
 import TextField from "./shared/TextField";
+import styled from "styled-components";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -19,26 +20,8 @@ export default function Login() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      style={{
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          boxShadow: "0 4px 12px rgba(0,0,0,.1)",
-          background: "white",
-          padding: 16,
-        }}
-      >
+    <StyledForm onSubmit={handleSubmit}>
+      <StyledContainer>
         <h2>Select a user name</h2>
         <TextField
           id="userNameInput"
@@ -47,7 +30,21 @@ export default function Login() {
           value={userName}
         ></TextField>
         <Button type="submit" text="Go" disabled={userName === ""}></Button>
-      </div>
-    </form>
+      </StyledContainer>
+    </StyledForm>
   );
 }
+const StyledForm = styled.form`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+`;

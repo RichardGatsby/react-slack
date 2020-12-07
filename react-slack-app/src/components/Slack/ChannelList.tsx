@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import styled, { css } from "styled-components";
 import { selectChannels } from "../../store/Channels/selectors";
 
 interface ChannelListProps {
@@ -18,20 +19,24 @@ export default function ChannelList({
     <>
       {channels.map((channel) => {
         return (
-          <div
-            style={{
-              padding: 8,
-              textDecoration:
-                channel.id === selectedChannelId ? "underline" : "none",
-              cursor: "pointer",
-            }}
+          <StyledChannelItem
+            isSelected={channel.id === selectedChannelId}
             key={channel.id}
             onClick={() => onChannelClick(channel.id)}
           >
             #{channel.name}
-          </div>
+          </StyledChannelItem>
         );
       })}
     </>
   );
 }
+const StyledChannelItem = styled.div<{ isSelected: boolean }>`
+  padding: 8px;
+  cursor: pointer;
+  ${(props) => {
+    return css`
+      text-decoration: ${props.isSelected ? "underline" : "none"};
+    `;
+  }}
+`;

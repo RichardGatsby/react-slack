@@ -1,5 +1,6 @@
 import React from "react";
 import { MouseEventHandler } from "react";
+import styled from "styled-components";
 
 interface ButtonProps {
   text?: string;
@@ -10,20 +11,16 @@ interface ButtonProps {
 
 export default function Button({ text, onClick, disabled, type }: ButtonProps) {
   return (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      style={{
-        margin: 8,
-        padding: "8px 16px",
-        borderRadius: 4,
-        background: "blue",
-        color: "white",
-        cursor: "pointer",
-      }}
-      type={type}
-    >
+    <StyledButton onClick={onClick} disabled={disabled} type={type}>
       {text}
-    </button>
+    </StyledButton>
   );
 }
+const StyledButton = styled.button`
+  margin: 8px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  background: blue;
+  color: white;
+  cursor: pointer;
+`;
