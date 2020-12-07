@@ -1,7 +1,7 @@
 
 
 ## Using React & Redux
-Just a simple webclient to handle slack like chat over websockets with redux state management
+Just a simple webclient to handle slack like chat over websockets with redux state management. [WIP]
 
 
 
