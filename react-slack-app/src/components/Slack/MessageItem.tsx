@@ -10,14 +10,7 @@ export default function MessageItem({ message }: MessageItemProps) {
   return (
     <StyledContainer>
       <StyledUserCircle>{message.userName.charAt(0)}</StyledUserCircle>
-      <StyledContentArea
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          maxWidth: "90%",
-          wordBreak: "break-all",
-        }}
-      >
+      <StyledContentArea>
         <div style={{ width: "100%" }}>
           <span
             style={{

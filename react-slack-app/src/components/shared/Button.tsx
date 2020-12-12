@@ -5,7 +5,7 @@ import styled from "styled-components";
 interface ButtonProps {
   text?: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
-  type?: "submit" | "button";
+  type: "submit" | "button";
   disabled?: boolean;
 }
 

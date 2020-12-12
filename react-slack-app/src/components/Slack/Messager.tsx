@@ -29,6 +29,7 @@ export default function Messager({ onSend, disabled }: MessagerProps) {
         text={"send >>"}
         onClick={handleSendMessage}
         disabled={disabled}
+        type="button"
       ></Button>
     </StyledContainer>
   );

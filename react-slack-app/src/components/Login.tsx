@@ -16,7 +16,7 @@ export default function Login() {
     dispatch(
       setUser({ userName: userName, id: Math.floor(Math.random() * 10000) })
     );
-    history.push("/slack");
+    history.push("/channels");
   };
 
   return (
@@ -28,7 +28,7 @@ export default function Login() {
           name="Username"
           onChange={(value: string) => setUserName(value)}
           value={userName}
-        ></TextField>
+        />
         <Button type="submit" text="Go" disabled={userName === ""}></Button>
       </StyledContainer>
     </StyledForm>

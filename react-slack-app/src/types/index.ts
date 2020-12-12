@@ -10,6 +10,7 @@ export type UserState = {
 
 export type ChannelsState = {
   channels: Channel[];
+  messages: Message[];
   selectedChannelId: number | null;
 };
 
@@ -32,5 +33,4 @@ export interface Message {
 export interface Channel {
   id: number;
   name: string;
-  messages: Message[];
 }

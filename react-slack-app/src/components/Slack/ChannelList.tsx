@@ -1,20 +1,20 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import styled, { css } from "styled-components";
-import { selectChannels } from "../../store/Channels/selectors";
+
+import { Channel } from "../../types";
 
 interface ChannelListProps {
-  // list: Channel[];
+  channels: Channel[];
   selectedChannelId: number | null;
   onChannelClick: (id: number) => void;
 }
 
 export default function ChannelList({
-  // list,
+  channels,
   selectedChannelId,
   onChannelClick,
 }: ChannelListProps) {
-  const channels = useSelector(selectChannels);
+  console.log("ChannelList render");
   return (
     <>
       {channels.map((channel) => {

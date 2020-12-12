@@ -23,13 +23,13 @@ function App() {
         <Header userName={user?.userName}></Header>
         <React.Suspense fallback={<div>Loading...</div>}>
           <Route path={"/login"} component={() => <LazyLogin />} />
-          <Route path={"/slack"} component={() => <LazySlack />} />
+          <Route path={"/channels"} component={() => <LazySlack />} />
           <Route
             exact
             path="/"
             render={() => {
               return user != null ? (
-                <Redirect to="/slack" />
+                <Redirect to="/channels" />
               ) : (
                 <Redirect to="/login" />
               );

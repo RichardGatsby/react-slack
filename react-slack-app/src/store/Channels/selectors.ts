@@ -1,5 +1,5 @@
 import { createSelector } from "reselect";
-import { AppState } from "../../types";
+import { AppState, Channel } from "../../types";
 
 export const selectChannelsState: (s: AppState) => AppState["channels"] = ({
   channels,
@@ -13,6 +13,11 @@ export const selectChannels = createSelector(
 export const selectSelectedChannelId = createSelector(
   selectChannelsState,
   ({ selectedChannelId }) => selectedChannelId
+);
+
+export const selectMessages = createSelector(
+  selectChannelsState,
+  ({ messages }) => messages
 );
 
 export const selectChannel = (channelId: number) =>

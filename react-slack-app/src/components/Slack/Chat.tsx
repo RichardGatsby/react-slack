@@ -1,32 +1,31 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { addMessage } from "../../store/Channels/actionCreators";
-import { selectChannels } from "../../store/Channels/selectors";
+import { addMessage } from "../../store/Channels/actions";
+import { selectMessages } from "../../store/Channels/selectors";
 import { selectUser } from "../../store/User/selectors";
-import { Message } from "../../types";
+import { Channel, Message } from "../../types";
+import useWebSocket from "../../utils/hooks/useWebSocket";
 import MessageItem from "./MessageItem";
 import Messager from "./Messager";
 
 interface ChatProps {
-  channelId: number;
+  channel: Channel;
 }
-//TODO: Make app configuratin and get it from there
-const ENDPOINT = "ws://localhost:8999/";
 
-export default function Chat({ channelId }: ChatProps) {
-  const ws = useRef<WebSocket>();
-
+export default function Chat({ channel }: ChatProps) {
+  const { connected, lastMessage, sendMessage, close } = useWebSocket(
+    "ws://localhost:8999/"
+  );
   const dispatch = useDispatch();
-  const channels = useSelector(selectChannels);
+  const messages = useSelector(selectMessages).filter(
+    (row) => row.channelId === channel.id
+  );
   const user = useSelector(selectUser);
   const messageListRef = useRef<HTMLDivElement>(null);
-  const [connected, setConnected] = useState(false);
-
-  const channel = channels.find((row) => row.id === channelId);
 
   const handleSendMessage = (msg: string) => {
-    if (channel && user) {
+    if (user) {
       const message: Message = {
         content: msg,
         channelId: channel.id,
@@ -34,57 +33,38 @@ export default function Chat({ channelId }: ChatProps) {
         timeStamp: new Date().toISOString(),
       };
       dispatch(addMessage(message));
-
-      if (ws && ws.current) ws.current.send(JSON.stringify(message));
+      sendMessage(message);
     }
   };
 
-  //TODO: refactor the WS connection as a Redux store middleware
-  // or use a ContextProvider that handles it to whole APP
   useEffect(() => {
-    if (!(ws && ws.current && ws.current.readyState === 1)) {
-      ws.current = new WebSocket(ENDPOINT);
-
-      ws.current.onopen = () => {
-        alert("Connected to ChatHub");
-        setConnected(true);
-      };
-
-      ws.current.onmessage = (evt) => {
-        console.log("message received: ", evt.data);
-        const message: Message = JSON.parse(evt.data);
-        if (message.content) {
-          dispatch(addMessage(message));
-        }
-      };
-
-      ws.current.onclose = () => {
-        setConnected(false);
-        alert("Disconnected from ChatHub");
-      };
-    }
     //Cleanup
     return () => {
-      if (ws && ws.current) ws.current.close();
+      close();
     };
     //
   }, []);
 
   useEffect(() => {
+    if (lastMessage) {
+      const message: Message = JSON.parse(lastMessage);
+      if (message.content) {
+        dispatch(addMessage(message));
+      }
+    }
+  }, [lastMessage]);
+
+  useEffect(() => {
     if (messageListRef && messageListRef.current) {
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
     }
-  }, [channel?.messages.length]);
-
-  if (!channel) {
-    return <div>Could not find the channel</div>;
-  }
+  }, [messages.length]);
 
   return (
     <StyledContainer>
       <StyledChatHeader>Chatting on channel #{channel.name}</StyledChatHeader>
       <StyledChat ref={messageListRef}>
-        {channel.messages.map((message) => {
+        {messages.map((message) => {
           return <MessageItem key={message.timeStamp} message={message} />;
         })}
       </StyledChat>

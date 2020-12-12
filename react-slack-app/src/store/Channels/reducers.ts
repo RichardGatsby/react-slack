@@ -3,18 +3,14 @@ import {
   ChannelsActionTypes,
   SelectedChannelIdAction,
   AddMessageAction,
-} from "./actionCreators";
+  SetChannelsAction,
+} from "./actions";
 import * as actionTypes from "./actionTypes";
 
-
-//TODO: make mock API for channels
 const initialState: ChannelsState = {
-  channels: [
-    { name: "General", id: 0, messages: [] },
-    { name: "Development", id: 1, messages: [] },
-    { name: "General", id: 2, messages: [] },
-  ],
+  channels: [],
   selectedChannelId: null,
+  messages: [],
 };
 
 const reducer = (
@@ -29,13 +25,14 @@ const reducer = (
       };
     case actionTypes.ADD_MESSAGE: {
       const message = (action as AddMessageAction).message;
-      const channels = state.channels.map((channel) => {
-        if (channel.id === message.channelId) {
-          channel.messages.push(message);
-        }
-        return channel;
-      });
 
+      return {
+        ...state,
+        messages: [...state.messages, message],
+      };
+    }
+    case actionTypes.SET_CHANNELS: {
+      const channels = (action as SetChannelsAction).channels;
       return {
         ...state,
         channels,
